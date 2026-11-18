@@ -20,6 +20,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
+// Aplica as migrations pendentes ao iniciar, apenas se a configuração permitir
+if (app.Configuration.GetValue<bool>("RunMigrationsOnStartup"))
+{
+    app.Logger.LogInformation("Verificando e aplicando migrations pendentes...");
+
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync();
+
+    app.Logger.LogInformation("Banco de dados atualizado.");
+}
+
 // Captura exceções não tratadas e responde com um erro pradronizado.
 app.UseExceptionHandler();
 
