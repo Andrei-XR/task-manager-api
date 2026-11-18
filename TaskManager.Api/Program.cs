@@ -53,6 +53,6 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health");
 
-app.Logger.LogInformation("Task Manager API inciada no ambiente {Environment}", app.Environment.EnvironmentName);
+app.Logger.LogInformation("Task Manager API iniciada no ambiente {Environment}", app.Environment.EnvironmentName);
 
 app.Run();
